@@ -21,7 +21,22 @@
 
 
 <div class="container">
+     {{#each data}}
+    <div class="card">
+      <h5 class="card-header">{{title}}</h5>
+        <div class="card-body">
+    
+          <p class="card-text">{{summary}}</p>
+          <a href="#" id="save" data-id="{{_id}}" class="btn btn-primary float-right">Save</a>
+      </div>
+    </div>
+
+  {{/each}}
+ 
+
+
   
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
 <script src="js/saved.js" type="text/javascript"></script>

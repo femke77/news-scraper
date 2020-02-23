@@ -37,40 +37,52 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true }).then(function () {
 
 //Routes
 
-//landing page
+//landing page get articles
 app.get("/", (req, res) => {
-  db.Article.find({}).lean().then(function(dbArticles){ 
+  db.Article.find({ saved: false }).lean().then(function (dbArticles) {
     var hbsObject = {
-    data: dbArticles
-  };
-    console.log(dbArticles)
-     res.render("index", hbsObject);
+      data: dbArticles
+    };
+    res.render("index", hbsObject);
   });
 });
 
-//saved articles
+//get route - get saved articles
 app.get("/saved", (req, res) => {
-  res.render("saved");
+  db.Article.find({ saved: true }).lean().then(function (dbArticles) {
+    var hbsObject = {
+      data: dbArticles
+    };
+    res.render("saved", hbsObject);
+  });
 });
 
-//clear the database
+//put route for changing save status of article
+app.put("/save/:id", (req, res) => {
+  //using id from params, find the aritcle and update saved to true
+  db.Article.updateOne({ _id: req.params.id }, {
+    saved: true
+  }).then(function (response) {
+    res.json(response);
+  });
+});
+
+
+//Delete route - clear the database collection of articles
 app.delete("/delete", (req, res) => {
-  db.Article.deleteMany({}).then(function(){
-    res.status("200").send("deleted")
-  })
-  
+  db.Article.deleteMany({}).then(function () {
+    res.status("200").send("deleted collection")
+  });
 });
 
-//GET scraping route
+//Get route for scraping wsj articles
 app.get("/scrape", (req, res) => {
-  console.log("get")
-  axios.get("https://www.wsj.com").then(function(response) {
-    console.log("axios")
+  axios.get("https://www.wsj.com").then(function (response) {
     const $ = cheerio.load(response.data);
     const result = {};
 
     $("article").each(function (i, element) {
-      result.title = $(element).find(".WSJTheme--headline--19_2KfxG").children().text();
+      result.title = $(element).find(".WSJTheme--headline--19_2KfxG").children().first().text();
       result.link = $(element).find("a").attr("href");
       result.summary = $(element).find(".WSJTheme--summary--12br5Svc ").children().remove().end().text()
 
