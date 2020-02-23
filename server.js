@@ -37,8 +37,32 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true }).then(function () {
 
 //Routes
 
+//landing page
+app.get("/", (req, res) => {
+  db.Article.find({}).lean().then(function(dbArticles){ 
+    var hbsObject = {
+    data: dbArticles
+  };
+    console.log(dbArticles)
+     res.render("index", hbsObject);
+  });
+});
+
+//saved articles
+app.get("/saved", (req, res) => {
+  res.render("saved");
+});
+
+//clear the database
+app.delete("/delete", (req, res) => {
+  db.Article.deleteMany({}).then(function(){
+    res.status("200").send("deleted")
+  })
+  
+});
+
 //GET scraping route
-app.get("/scrape", function(req, res) {
+app.get("/scrape", (req, res) => {
   console.log("get")
   axios.get("https://www.wsj.com").then(function(response) {
     console.log("axios")
@@ -46,10 +70,9 @@ app.get("/scrape", function(req, res) {
     const result = {};
 
     $("article").each(function (i, element) {
-
-      result.title = $(element).children().children().children().text();
+      result.title = $(element).find(".WSJTheme--headline--19_2KfxG").children().text();
       result.link = $(element).find("a").attr("href");
-      result.summary = $(element).find("p").text()
+      result.summary = $(element).find(".WSJTheme--summary--12br5Svc ").children().remove().end().text()
 
       if (result.title && result.link && result.summary) {
         db.Article.create(result)
@@ -61,7 +84,7 @@ app.get("/scrape", function(req, res) {
           })
       }
     });
-    res.send("Scrape Completed");
+    res.send("Scrape Completed!");
   });
 });
 
