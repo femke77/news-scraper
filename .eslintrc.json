@@ -4,7 +4,12 @@
         "node": true
     },
     "extends": [
-        "airbnb-base"
+        "airbnb-base",
+        "eslint-config-prettier"
+    ],
+    "plugins": [
+      "prettier",
+      "eslint-plugin-prettier"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -14,7 +19,10 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
+  
     "rules": {
+        "linebreak-style":"off",
+        "no-console": 0,
         "no-duplicate-case": "error",
         "no-empty": "error",
         "no-extra-semi": "error",
