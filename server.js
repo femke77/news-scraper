@@ -77,6 +77,15 @@ app.put("/unsave/:id", (req, res) => {
   });
 });
 
+//create note and add the reference to the article record
+app.post("/article/:id", (req, res) => {
+  db.Note.create(req.body)
+  .then(function(dbNote){
+    return db.Article.findOneAndUpdate({_id: req.params.id}, {$push: {notes: dbNote._id}}, {new: true})
+  }).then(function(dbArticle){
+    res.json(dbArticle);
+  })
+});
 
 //Delete route - clear the database collection of articles
 app.delete("/delete", (req, res) => {
