@@ -86,11 +86,13 @@ app.get("/article/:id", (req, res) => {
   })
 });
 
+//route to delete a note
 app.delete("/note/:id", (req, res) => {
   db.Note.deleteOne({_id: req.params.id}).then(function(){
     res.status("200").send("deleted");
-  })
-})
+    //THIS IS LEAVING ORPHANED REFERENCES IN ARTICLE. NEED TO $PULL
+  });
+});
 
 //create note and add the reference to the article record
 app.post("/article/:id", (req, res) => {
