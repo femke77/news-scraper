@@ -15,7 +15,7 @@
 <div class="jumbotron jumbotron-fluid">
   <div class="container text-center">
     <h1 class="display-4">Saved Articles</h1>
-    <p class="lead">Your Saved Articles</p>
+    <p class="lead">Your Saved Articles and Article Notes</p>
   </div>
 </div>
 
@@ -27,7 +27,8 @@
         <div class="card-body">
     
           <p class="card-text">{{summary}}</p>
-          <a href="#" id="save" data-id="{{_id}}" class="btn btn-primary float-right">Save</a>
+          <a href="#" id="note" data-id="{{_id}}" class="btn btn-primary float-right">Article Note</a>
+          <a href="#" id="unsave" data-id="{{_id}}" class="btn btn-danger float-right mr-3">Remove from Saved</a>
       </div>
     </div>
 

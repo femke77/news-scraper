@@ -57,11 +57,21 @@ app.get("/saved", (req, res) => {
   });
 });
 
-//put route for changing save status of article
+//put route for changing save status of article to saved
 app.put("/save/:id", (req, res) => {
   //using id from params, find the aritcle and update saved to true
   db.Article.updateOne({ _id: req.params.id }, {
     saved: true
+  }).then(function (response) {
+    res.json(response);
+  });
+});
+
+//put route for changing save status of article to unsaved
+app.put("/unsave/:id", (req, res) => {
+  //using id from params, find the aritcle and update saved to true
+  db.Article.updateOne({ _id: req.params.id }, {
+    saved: false
   }).then(function (response) {
     res.json(response);
   });
