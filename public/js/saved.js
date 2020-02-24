@@ -16,6 +16,7 @@ $(document).ready(function () {
     const articleId = $(this).attr("data-id");
     //attach it to the save note button
     $("#modalSaveNote").attr("data-id", articleId)
+    $(".notes").empty();
 
     //show all the previous notes for the article id when the modal opens
     $.ajax({
@@ -27,7 +28,7 @@ $(document).ready(function () {
       console.log(notes)
       if (notes !== "") {
         notes.forEach(note => {
-          $(".modal-body").prepend("<div>"+ note.text + 
+          $(".notes").prepend("<div>"+ note.text + 
           "<button class='delete btn btn-danger float-right'>X</button></div><hr><br>");
           $(".delete").attr("data-id", note._id);
         });
