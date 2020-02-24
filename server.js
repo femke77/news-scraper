@@ -77,6 +77,21 @@ app.put("/unsave/:id", (req, res) => {
   });
 });
 
+//route for getting specific article with all of its notes
+app.get("/article/:id", (req, res) => {
+  db.Article.findOne({ _id: req.params.id })
+  .populate("notes")
+  .then(function(dbArticle){
+    res.json(dbArticle);
+  })
+});
+
+app.delete("/note/:id", (req, res) => {
+  db.Note.deleteOne({_id: req.params.id}).then(function(){
+    res.status("200").send("deleted");
+  })
+})
+
 //create note and add the reference to the article record
 app.post("/article/:id", (req, res) => {
   db.Note.create(req.body)
@@ -116,7 +131,9 @@ app.get("/scrape", (req, res) => {
       }
     });
     res.send("Scrape Completed!");
-  });
+  }).catch(function(err){
+    console.log(err);
+  })
 });
 
 // listen for connection
