@@ -24,6 +24,8 @@ The button to clear the collection should not disrupt the saved articles.
 
 The styling is currently quite boring. 
 
+The code is not following the principle of DRY. Partials should be used for the article cards as well as several other areas that are not refactored yet. 
+
 # Credits
 
 Thank you to WSJ.com for the data!
